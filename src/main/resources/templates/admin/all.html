@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+
+<div th:each="user : ${users}">
+    <th:block>
+        <span th:text="${user.getId()}"></span>
+        <span> &#10072; </span>
+        <a th:href="@{/admin/particular/{id}(id=${user.getId()})}" th:text="${user.getName()}"></a>
+        <span> &#10072; </span>
+        <div th:each="role : ${user.getRoles()}">
+            <span th:text="${role.getName()}"></span>
+        </div>
+        <hr/>
+    </th:block>
+</div>
+
+<hr/>
+
+<a th:href="@{/admin/new}">Add new user</a>
+
+<hr/>
+<a th:href="@{/logout}">Logout</a>
+
+</body>
+</html>

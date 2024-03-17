@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit user</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/admin/particular/{id}(id=${user.getId()})}" th:object="${user}">
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name"/>
+
+    <label for="age">Age</label>
+    <input type="number" th:field="*{age}" id="age"/>
+
+    <label for="username">Username</label>
+    <input type="text" th:field="*{username}" id="username"/>
+
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password"/>
+
+    <label for="role1">Add a user with admin rights </label>
+    <input type="checkbox" name="role1" id="role1"/>
+
+    <hr/>
+
+    <input type="submit" value="Update!"/>
+
+</form>
+
+<hr/>
+<a th:href="@{/logout}">Logout</a>
+
+</body>
+</html>

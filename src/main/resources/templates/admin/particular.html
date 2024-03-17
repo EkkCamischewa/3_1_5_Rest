@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>User</title>
+</head>
+<body>
+<div>
+    <p>
+        <tt> Id: </tt>
+        <span th:text="${user.getId}"></span>
+    </p>
+    <p>
+        <tt> Name: </tt>
+        <span th:text="${user.getName()}"></span>
+    </p>
+    <p>
+        <tt> Age: </tt>
+        <span th:text="${user.getAge()}"></span>
+    </p>
+    <p>
+        <tt> Username: </tt>
+        <span th:text="${user.getUsername()}"></span>
+    </p>
+    <p>
+        <tt> Password: </tt>
+        <span th:text="${user.getPassword()}"></span>
+    </p>
+
+        <tt> ROLES: </tt>
+        <div th:each="role : ${user.getRoles()}">
+            <span th:text="${role.getName()}"></span>
+        </div>
+
+
+</div>
+
+<hr/>
+
+<a th:href="@{/admin/edit/{id}(id=${user.getId()})}">Edit user</a>
+
+<form th:method="DELETE" th:action="@{/admin/particular/delete/{id}(id=${user.getId()})}">
+    <input type="submit" value="Delete">
+</form>
+
+<hr/>
+
+<a th:href="@{/logout}">Logout</a>
+</body>
+</html>
