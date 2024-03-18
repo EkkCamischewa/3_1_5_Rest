@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,10 +9,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,14 +38,14 @@ public class UserServiceImpl implements UserService {
 
 //    @PostConstruct
 //    public void initDB() {
-//        Set<Role> roles = new HashSet<>(roleDao.findAll());
+//        Set<Role> roles = new HashSet<>(roleService.getAllRole());
 //        User user = new User("Rina",22,"Rina",
 //                bCryptPasswordEncoder.encode("1234"));
 //        user.setRoles(roles);
 //        userDao.save(user);
 //    }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
@@ -52,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public User getById(Long id) {
         return userDao.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -64,7 +68,7 @@ public class UserServiceImpl implements UserService {
         return userDao.findByUsername(username);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<User> getAllUsers() {
         return userDao.findAll();
@@ -96,6 +100,4 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         userDao.deleteById(id);
     }
-
-
 }
