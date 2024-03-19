@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.utils.UserNotCreatedException;
+import ru.kata.spring.boot_security.demo.utils.UserNotFoundException;
 
 
 import javax.annotation.PostConstruct;
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User getById(Long id) {
-        return userDao.findById(id).orElseThrow(EntityNotFoundException::new);
+        return userDao.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @Transactional
@@ -80,13 +82,14 @@ public class UserServiceImpl implements UserService {
         if (user.getRoles()==null) {
             user.setRoles(Set.of(roleService.getRoleUser()));
         }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
 
     @Transactional
     public void updateUser(User newUser) {
-        User oldUser = userDao.getById(newUser.getId());
+        User oldUser = getById(newUser.getId());
         oldUser.setName(newUser.getName());
         oldUser.setUsername(newUser.getUsername());
         oldUser.setAge(newUser.getAge());
@@ -98,6 +101,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUser(Long id) {
-        userDao.deleteById(id);
+        User user = getById(id);
+        userDao.delete(user);
     }
 }

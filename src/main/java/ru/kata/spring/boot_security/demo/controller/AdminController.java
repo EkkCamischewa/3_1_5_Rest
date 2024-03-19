@@ -52,8 +52,7 @@ public class AdminController {
 
     @PostMapping("/new")
     public String createUser(@ModelAttribute("user") User user,
-                             @RequestParam(value = "role1", required = false) boolean adminFlag,
-                             @RequestParam(value = "password") String password) {
+                             @RequestParam(value = "role1", required = false) boolean adminFlag) {
         Set<Role> userRole = new HashSet<>();
 
         if (adminFlag) {
@@ -62,7 +61,7 @@ public class AdminController {
         userRole.add(roleService.getRoleUser());
 
         user.setRoles(userRole);
-        user.setPassword(bCryptPasswordEncoder.encode(password));
+
         userService.addNewUser(user);
 
         return "redirect:/admin/all";
