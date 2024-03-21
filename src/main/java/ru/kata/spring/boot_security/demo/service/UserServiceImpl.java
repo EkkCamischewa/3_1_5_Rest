@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,14 +8,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.utils.UserNotCreatedException;
 import ru.kata.spring.boot_security.demo.utils.UserNotFoundException;
 
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
+import java.rmi.ServerError;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -82,6 +80,14 @@ public class UserServiceImpl implements UserService {
         if (user.getRoles()==null) {
             user.setRoles(Set.of(roleService.getRoleUser()));
         }
+        if (user.getRoles().isEmpty()){
+            user.getRoles().add(roleService.getRoleUser());
+        }
+        if (user.getRoles().contains(roleService.getRoleAdmin())){
+            user.getRoles().add(roleService.getRoleUser());
+        }
+        System.err.println(user.getRoles().contains(roleService.getRoleAdmin()));
+
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }

@@ -10,10 +10,11 @@ import ru.kata.spring.boot_security.demo.utils.UserErrorResponsible;
 import ru.kata.spring.boot_security.demo.utils.UserNotCreatedException;
 import ru.kata.spring.boot_security.demo.utils.UserNotFoundException;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/users")
 public class AdminRestController {
 
     private final UserService userService;
@@ -23,9 +24,9 @@ public class AdminRestController {
         this.userService = userService;
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello!";
+    @GetMapping("/current")
+    public User getCurrentUser(Principal principal) {
+        return userService.getByUsername(principal.getName());
     }
 
     @GetMapping("/all")
@@ -49,7 +50,7 @@ public class AdminRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/edit")
+    @PatchMapping("/{id}/edit")
     public ResponseEntity<HttpStatus> editUser(@PathVariable("id") Long id, @RequestBody User user) {
         user.setId(id);
         userService.updateUser(user);
@@ -57,9 +58,9 @@ public class AdminRestController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok("User deleted successfully");
     }
 
     @ExceptionHandler

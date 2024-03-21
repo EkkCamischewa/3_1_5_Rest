@@ -11,4 +11,6 @@ public interface RoleService {
     Role getRoleUser();
 
     Set<Role> getAllRole();
+
+    Role findById(Long id);
 }

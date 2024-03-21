@@ -5,24 +5,25 @@ export async function getAuthUser() {
         : null
 }
 
-export async function getAuthUsername() {
+export async function getAuthId() {
     return await getAuthUser()
-        .then(authUser => authUser.username)
-        .then(username => {
-            return username === undefined ? null : username
+        .then(authUser => authUser.id)
+        .then(id => {
+            return id === undefined ? null : id
         })
 }
 
 export async function updateUserInfo() {
     let authUser = await getAuthUser()
     if (authUser != null) {
-        $("#usernameNavbar").text(authUser.username)
         $("#userId").text(authUser.id)
-        $("#username").text(authUser.username)
+        $("#usernameNavbar").text(authUser.name)
+        $("#userName").text(authUser.name)
         $("#userAge").text(authUser.age)
+        $("#userUsername").text(authUser.username)
         let rolesText = " with roles: "
         for (let role of authUser.roles) {
-            rolesText += `${role.role.substring(5)},  `
+            rolesText += `${role.name.substring(5)},  `
         }
         $("#userRolesNavbar").text(rolesText.substring(0, rolesText.length - 3))
         $("#userRoles").text(rolesText.substring(12, rolesText.length - 3))

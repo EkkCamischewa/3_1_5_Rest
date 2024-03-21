@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.utils.RoleNotFoundException;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
@@ -43,4 +43,9 @@ public class RoleServiceImpl implements RoleService {
     public Set<Role> getAllRole() {
         return new HashSet<>(roleDao.findAll());
     }
+
+    public Role findById(Long id){
+        return roleDao.findById(id).orElseThrow(RoleNotFoundException::new);
+    }
+
 }

@@ -26,21 +26,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests()
-                .anyRequest().permitAll();
 //                .authorizeRequests()
-//                .antMatchers("/", "/index","/test","/test/**").permitAll()
-//                .antMatchers("/registration").not().fullyAuthenticated()
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/user").hasAnyRole("USER","ADMIN")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().successHandler(successUserHandler)
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .logoutSuccessUrl("/");
+//                .anyRequest().permitAll();
+                .authorizeRequests()
+                .antMatchers("/", "/index").permitAll()
+                .antMatchers("/user", "/users/current").hasAnyRole("USER","ADMIN")
+                .antMatchers("/admin/**").access("hasAnyRole('ADMIN')")
+                .antMatchers("/roles/**").access("hasAnyRole('ADMIN')")
+                .antMatchers("/users/**").access("hasAnyRole('ADMIN')")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().successHandler(successUserHandler)
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
     }
 
     @Bean
