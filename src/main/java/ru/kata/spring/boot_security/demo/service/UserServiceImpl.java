@@ -86,7 +86,6 @@ public class UserServiceImpl implements UserService {
         if (user.getRoles().contains(roleService.getRoleAdmin())){
             user.getRoles().add(roleService.getRoleUser());
         }
-        System.err.println(user.getRoles().contains(roleService.getRoleAdmin()));
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.save(user);

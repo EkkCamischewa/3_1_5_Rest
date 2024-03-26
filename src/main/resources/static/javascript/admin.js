@@ -96,8 +96,14 @@ $(document).ready(async function () {
                 "Content-Type": "application/json"
             }
         })
+
         await updateUsersTable()
-        window.location = "/admin"
+
+        let tabNew = document.getElementById("new");
+        tabNew.classList.remove('active', 'show');
+
+        let tabAll = document.getElementById("all");
+        tabAll.classList.add('active', 'show');
     })
 })
 
